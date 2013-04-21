@@ -1,4 +1,4 @@
-=== Plugin Name ===
+=== CPT Bootstrap Carousel ===
 Contributors: tallphil
 Donate Link: http://phil.ewels.co.uk
 Tags: carousel, slider, image, bootstrap
@@ -8,11 +8,11 @@ Stable tag: 1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-A custom post type for choosing images and content which outputs Bootstrap Image Carousel (slider) from a shortcode.
+A custom post type for choosing images and content which outputs Bootstrap Image Carousel (slider) from the [image-carousel] shortcode.
 
 == Description ==
 
-A custom post type for choosing images and content which outputs a [carousel](http://twitter.github.io/bootstrap/javascript.html#carousel) from [Twitter Bootstrap](http://www.getbootstrap.com) using a shortcode. 
+A custom post type for choosing images and content which outputs a [carousel](http://twitter.github.io/bootstrap/javascript.html#carousel) from [Twitter Bootstrap](http://www.getbootstrap.com) using the shortcode `[image-carousel]`. 
 
 The plugin assumes that you're already using Bootstrap, so you need to load the Bootstrap javascript and CSS separately.
 
@@ -22,6 +22,8 @@ The plugin assumes that you're already using Bootstrap, so you need to load the 
 * [Bootstrap Carousel in action](http://twitter.github.io/bootstrap/examples/carousel.html)
 
 I may consider adding an option to load the Bootstrap files in the future if there is demand. Let me know if you'd like it!
+
+If you'd like to contribute to this plugin, you can find it [hosted on GitHub](https://github.com/tallphil/cpt-bootstrap-carousel).
 
 == Installation ==
 
