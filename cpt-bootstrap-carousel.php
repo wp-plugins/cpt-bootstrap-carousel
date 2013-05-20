@@ -3,7 +3,7 @@
 Plugin Name: CPT Bootstrap Carousel
 Plugin URI: http://www.tallphil.co.uk/bootstrap-carousel
 Description: A custom post type for choosing images and content which outputs <a href="http://twitter.github.io/bootstrap/javascript.html#carousel" target="_blank">Bootstrap Carousel</a> from a shortcode. Requires Bootstrap javascript and CSS to be loaded separately.
-Version: 1.0
+Version: 1.1
 Author: Phil Ewels
 Author URI: http://phil.ewels.co.uk
 License: GPLv2
@@ -61,8 +61,17 @@ add_action( 'after_setup_theme', 'cptbc_addFeaturedImageSupport');
 // FRONT END
 
 // Shortcode
-function cptbc_shortcode($atts) { 
-	$atts = (array) $atts;
+function cptbc_shortcode($atts, $content = null) {
+	// Set default shortcode attributes
+	$defaults = array(
+		'interval' => '5000',
+		'showcaption' => 'true',
+		'showcontrols' => 'true'
+	);
+
+	// Parse incomming $atts into an array and merge it with $defaults
+	$atts = shortcode_atts($defaults, $atts);
+
 	return cptbc_frontend($atts);
 }
 add_shortcode('image-carousel', 'cptbc_shortcode');
@@ -88,22 +97,26 @@ function cptbc_frontend($atts){
 		<div id="cptbc_<?php echo $id; ?>" class="carousel slide">
 			<ol class="carousel-indicators">
 			<?php foreach ($images as $key => $image) { ?>
-				<li data-target="#cptbc_<?php echo $id; ?>" data-slide-to="<?php echo $key; ?>" <?php echo $key == 0 ? 'class="active"' : ''; ?>></li>
+				<li data-target="#cptbc_<?php echo $id; ?>" data-slide-to="<?php echo $key; ?>" data-interval="<?php echo $atts['interval']; ?>" <?php echo $key == 0 ? 'class="active"' : ''; ?>></li>
 			<?php } ?>
 			</ol>
 			<div class="carousel-inner">
 			<?php foreach ($images as $key => $image) { ?>
 				<div class="item <?php echo $key == 0 ? 'active' : ''; ?>">
 					<?php echo $image['image']; ?>
-					<div class="carousel-caption">
-						<h4><?php echo $image['title']; ?></h4>
-						<p><?php echo $image['content']; ?></p>
-					</div>
+					<?php if($atts['showcaption'] === 'true') { ?>
+						<div class="carousel-caption">
+							<h4><?php echo $image['title']; ?></h4>
+							<p><?php echo $image['content']; ?></p>
+						</div>
+					<?php } ?>
 				</div>
 			<?php } ?>
 			</div>
-			<a class="left carousel-control" href="#cptbc_<?php echo $id; ?>" data-slide="prev">‹</a>
-			<a class="right carousel-control" href="#cptbc_<?php echo $id; ?>" data-slide="next">›</a>
+			<?php if($atts['showcontrols'] === 'true') { ?>
+				<a class="left carousel-control" href="#cptbc_<?php echo $id; ?>" data-slide="prev">‹</a>
+				<a class="right carousel-control" href="#cptbc_<?php echo $id; ?>" data-slide="next">›</a>
+			<?php } ?>
 		</div>
 <?php }
 	$output = ob_get_contents();
