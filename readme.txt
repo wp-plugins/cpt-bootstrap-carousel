@@ -1,10 +1,10 @@
 === CPT Bootstrap Carousel ===
-Contributors: tallphil, joshgerdes
+Contributors: tallphil, joshgerdes, atnon
 Donate Link: http://phil.ewels.co.uk
 Tags: carousel, slider, image, bootstrap
 Requires at least: 3.0.1
 Tested up to: 3.5.1
-Stable tag: 1.1
+Stable tag: 1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -34,6 +34,7 @@ If you'd like to contribute to this plugin, you can find it [hosted on GitHub](h
 1. Make sure that your theme is loading the [Twitter Bootstrap](http://www.getbootstrap.com) CSS and Carousel javascript
 1. Place the `[image-carousel]` shortcode in a Page or Post
 1. Create new items in the `Carousel` post type, uploading a Featured Image for each.
+	1. *Optional:* You can hyperlink each image by entering the desired url `Image Link URL` admin metabox when adding a new carousel image.
 
 = Shortcode Options =
 You can specify how long the carousel pauses for, and whether to display captions and the controls using optional
@@ -48,7 +49,6 @@ shortcode attributes:
 
 For example, to display the carousel with no captions, no controls and pausing for eight seconds, use the following:
 `[image-carousel interval="8000" showcaption="false" showcontrols="false"]`
-
 
 == Frequently Asked Questions ==
 
@@ -68,6 +68,10 @@ For example, to display the carousel with no captions, no controls and pausing f
 
 == Changelog ==
 
+= 1.2 =
+* Featured images are now shown in the admin list view
+* Added new admin metabox for image url (written by @tallphil, based on code contributed by @atnon)
+
 = 1.1 =
 * Added shortcode attributes (code contributed by @joshgerdes)
 
@@ -75,6 +79,11 @@ For example, to display the carousel with no captions, no controls and pausing f
 * Initial release
 
  == Upgrade Notice ==
+
+= 1.2 =
+* Featured images are now shown in the admin list view.
+** Note: This update creates a new thumbnail size. I recommend using the [Regenerate Thumbnails](http://wordpress.org/plugins/regenerate-thumbnails/) WordPress plugin to regenerate all of your image thumbnails.
+* Added a new admin metabox to give each image a link (optional).
 
 = 1.1 =
 * Added shortcode attribute functionality for tweaking of carousel options.
