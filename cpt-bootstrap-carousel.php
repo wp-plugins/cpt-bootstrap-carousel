@@ -3,7 +3,7 @@
 Plugin Name: CPT Bootstrap Carousel
 Plugin URI: http://www.tallphil.co.uk/bootstrap-carousel/
 Description: A custom post type for choosing images and content which outputs <a href="http://twitter.github.io/bootstrap/javascript.html#carousel" target="_blank">Bootstrap Carousel</a> from a shortcode. Requires Bootstrap javascript and CSS to be loaded separately.
-Version: 1.2
+Version: 1.3
 Author: Phil Ewels
 Author URI: http://phil.ewels.co.uk
 License: GPLv2
@@ -43,6 +43,12 @@ function cptbc_post_type() {
 	); 
 	register_post_type('cptbc', $args);
 }
+// Create a taxonomy for the carousel post type
+function cptbc_taxonomies () {
+	$args = array('hierarchical' => true);
+	register_taxonomy( 'carousel_category', 'cptbc', $args );
+}
+add_action( 'init', 'cptbc_taxonomies', 0 );
 
 
 // Add theme support for featured images if not already present
@@ -77,7 +83,7 @@ function cptbc_columns_content($column_name, $post_ID) {
 	if ($column_name == 'featured_image') {  
 		$post_featured_image = cptbc_get_featured_image($post_ID);  
 		if ($post_featured_image) {  
-			echo '<img src="' . $post_featured_image . '" />';  
+			echo '<a href="'.get_edit_post_link($post_ID).'"><img src="' . $post_featured_image . '" /></a>';  
 		}  
 	}  
 }
@@ -120,7 +126,11 @@ function cptbc_shortcode($atts, $content = null) {
 	$defaults = array(
 		'interval' => '5000',
 		'showcaption' => 'true',
-		'showcontrols' => 'true'
+		'showcontrols' => 'true',
+		'orderby' => 'menu_order',
+		'order' => 'ASC',
+		'category' => '',
+		'twbs' => '2'
 	);
 
 	// Parse incomming $atts into an array and merge it with $defaults
@@ -133,7 +143,10 @@ add_shortcode('image-carousel', 'cptbc_shortcode');
 // Display carousel
 function cptbc_frontend($atts){
 	$id = rand(0, 999); // use a random ID so that the CSS IDs work with multiple on one page
-	$args = array( 'post_type' => 'cptbc', 'orderby' => 'menu_order', 'order' => 'ASC');
+	$args = array( 'post_type' => 'cptbc', 'orderby' => $atts['orderby'], 'order' => $atts['order']);
+	if($atts['category'] != ''){
+		$args['carousel_category'] = $atts['category'];
+	}
 	$loop = new WP_Query( $args );
 	$images = array();
 	while ( $loop->have_posts() ) {
@@ -177,7 +190,10 @@ function cptbc_frontend($atts){
 				</div>
 			<?php } ?>
 			</div>
-			<?php if($atts['showcontrols'] === 'true') { ?>
+			<?php if($atts['showcontrols'] === 'true' && $atts['twbs'] == '3') { ?>
+				<a class="left carousel-control" href="#cptbc_<?php echo $id; ?>" data-slide="prev"><span class="icon-prev"></span></a>
+				<a class="right carousel-control" href="#cptbc_<?php echo $id; ?>" data-slide="next"><span class="icon-next"></span></a>
+			<?php } else if($atts['showcontrols'] === 'true'){ ?>
 				<a class="left carousel-control" href="#cptbc_<?php echo $id; ?>" data-slide="prev">‹</a>
 				<a class="right carousel-control" href="#cptbc_<?php echo $id; ?>" data-slide="next">›</a>
 			<?php } ?>
